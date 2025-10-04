@@ -17,7 +17,7 @@ def process_sentences(sentences: list[str]) -> pd.DataFrame:
     Returns:
         DataFrame with columns: 'word', 'POS', 'count', sorted by 'word'
     """
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_trf")
 
     nouns: dict[str, int] = defaultdict(int)
     verbs: dict[str, int] = defaultdict(int)
