@@ -1,23 +1,36 @@
-"""Module for processing sentences with NLP to extract words and their POS tags."""
+"""Module for counting POS-tagged words from sentences."""
 
 from collections import defaultdict
 
 import pandas as pd
 import spacy
+from result import Err, Ok, Result
 from spacy.lang.en import stop_words
 
 
-def process_sentences(sentences: list[str]) -> pd.DataFrame:
+def count_pos_words(
+    sentences: list[str], model_prefix: str = "sm"
+) -> Result[pd.DataFrame, str]:
     """
-    Process sentences and extract nouns, verbs, and adjectives with counts.
+    Count nouns, verbs, and adjectives from sentences.
 
     Args:
         sentences: List of sentences to process
+        model_prefix: spaCy model prefix ('sm', 'md', 'lg', 'trf')
 
     Returns:
-        DataFrame with columns: 'word', 'POS', 'count', sorted by 'word'
+        Result containing DataFrame with columns: 'word', 'POS', 'count', sorted by 'word'
+        or error message
     """
-    nlp = spacy.load("en_core_web_trf")
+    model_name = f"en_core_web_{model_prefix}"
+
+    try:
+        nlp = spacy.load(model_name)
+    except OSError:
+        return Err(
+            f"Model '{model_name}' not found. "
+            f"Please install it using: python -m spacy download {model_name}"
+        )
 
     nouns: dict[str, int] = defaultdict(int)
     verbs: dict[str, int] = defaultdict(int)
@@ -57,4 +70,4 @@ def process_sentences(sentences: list[str]) -> pd.DataFrame:
     df = pd.DataFrame(rows)
     df = df.sort_values(by="word").reset_index(drop=True)
 
-    return df
+    return Ok(df)

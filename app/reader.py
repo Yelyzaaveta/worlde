@@ -3,12 +3,13 @@
 from pathlib import Path
 
 import pandas as pd
+from result import Err, Ok, Result
 
 
 def read_sentences(
     excel_file: Path,
     sheet_name: str | None = None,
-) -> list[str]:
+) -> Result[list[str], str]:
     """
     Read sentences from an Excel file.
 
@@ -17,13 +18,10 @@ def read_sentences(
         sheet_name: Name of the sheet to read. If None, tries first sheet or 'data' sheet
 
     Returns:
-        List of sentences as strings
-
-    Raises:
-        ValueError: If the file cannot be read or sheet is not found
+        Result containing list of sentences as strings or error message
     """
     if not excel_file.exists():
-        raise ValueError(f"File {excel_file} does not exist")
+        return Err(f"File not found: {excel_file}")
 
     df = None
 
@@ -31,7 +29,7 @@ def read_sentences(
         try:
             df = pd.read_excel(excel_file, sheet_name=sheet_name, header=None)
         except Exception as e:
-            raise ValueError(f"Could not read sheet '{sheet_name}': {e}")
+            return Err(f"Could not read sheet '{sheet_name}': {e}")
     else:
         # Try first sheet by index
         try:
@@ -41,7 +39,7 @@ def read_sentences(
             try:
                 df = pd.read_excel(excel_file, sheet_name="data", header=None)
             except Exception as e:
-                raise ValueError(
+                return Err(
                     f"Could not read the first sheet or 'data' sheet. "
                     f"Please specify the sheet name explicitly: {e}"
                 )
@@ -50,4 +48,4 @@ def read_sentences(
     df.columns = ["sentence"]
     sentences = df["sentence"].fillna("").astype(str).tolist()
 
-    return sentences
+    return Ok(sentences)
