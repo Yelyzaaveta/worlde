@@ -41,6 +41,17 @@ group.
 Потрібно також порахувати кількість слововживань для кожної лексеми в межах її
 групи.
 
+## 🤖 spaCy Models
+
+Worlde supports multiple spaCy English models. Choose based on your needs:
+
+| Model | Size | Speed | Accuracy | Use Case |
+|-------|------|-------|----------|----------|
+| `spacy-sm` | 12 MB | ⚡⚡⚡ Fast | Good | Quick analysis |
+| `spacy-md` | 31 MB | ⚡⚡ Medium | Better | Balanced accuracy/speed |
+| `spacy-lg` | 382 MB | ⚡ Slower | Best | High accuracy needed |
+| `spacy-trf` | 436 MB | 🐌 Slowest | Excellent | Maximum accuracy |
+
 ## 🚀 Installation
 
 ### Prerequisites
@@ -51,55 +62,16 @@ group.
 ### Setup
 
 1. **Clone the repository**:
+
+2. **Install dependencies** using `uv` and specify the spaCy model (from the
+   table above):
+
 ```bash
-git clone <repository-url>
-cd worlde
+uv sync --extra <spacy_model>
 ```
 
-2. **Install dependencies** using `uv`:
-```bash
-uv sync --extra dev --group dev
-```
-
-3. **Install a spaCy model** (see Models section below):
-```bash
-# Quick start with small model (fastest)
-uv pip install en-core-web-sm --index-url https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/
-
-# Or use our pre-configured sources
-uv sync  # Installs en-core-web-sm by default
-```
-
-## 🤖 spaCy Models
-
-Worlde supports multiple spaCy English models. Choose based on your needs:
-
-| Model | Size | Speed | Accuracy | Use Case |
-|-------|------|-------|----------|----------|
-| `sm` (small) | ~13 MB | ⚡⚡⚡ Fast | Good | Quick analysis, large datasets |
-| `md` (medium) | ~40 MB | ⚡⚡ Medium | Better | Balanced accuracy/speed |
-| `lg` (large) | ~560 MB | ⚡ Slower | Best | High accuracy needed |
-| `trf` (transformer) | ~440 MB | 🐌 Slowest | Excellent | Maximum accuracy, small datasets |
-
-### Installing Models
-
-**Pre-configured models** (recommended):
-```bash
-# Small model (default in pyproject.toml)
-uv sync
-
-# Transformer model (highest accuracy)
-uv pip install en-core-web-trf --index-url https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.8.0/
-```
-
-**Manual installation**:
-```bash
-# Using spaCy's download command
-uv run python -m spacy download en_core_web_md
-
-# Or direct from GitHub
-uv pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.8.0/en_core_web_lg-3.8.0-py3-none-any.whl
-```
+To switch to a different model, you can use run the previous command, with a
+new model specified
 
 ## 📖 Usage
 
@@ -155,24 +127,33 @@ Excel file requirements:
 - **One column** with sentences (no headers)
 - **One sentence per row**
 - Default reads from first sheet or sheet named "data"
-- Handles malformed sentences (missing punctuation, quotes, etc.)
-
-Example:
-```
-| Sentence |
-|----------|
-| The quick brown fox jumps over the lazy dog |
-| Natural language processing is fascinating |
-| Python programming makes text analysis easy |
-```
 
 ### 📤 Output Formats
 
 #### Excel Output (count command)
 
-**Header Row:**
 ```
-| (blank) | Nouns | (blank) | Verbs | (blank) | Adjectives | (blank) |
+|   | Nouns       |        | Verbs     |        | Adjectives  |        |
+|---|-------------|--------|-----------|--------|-------------|--------|
+| A | adjective   | 1      |           |        |             |        |
+| n |             |        | analyze   | 1      |             |        |
+| C | count       | 1      |           |        |             |        |
+| D | document    | 1      |           |        |             |        |
+| E |             |        |           |        | english     | 1      |
+| x |             |        | explore   | 1      |             |        |
+| F | file        | 1      |           |        |             |        |
+| G |             |        | generate  | 1      |             |        |
+| l | glance      | 1      |           |        |             |        |
+| H |             |        | highlight | 1      |             |        |
+| L | language    | 1      |           |        |             |        |
+| N | noun        | 1      |           |        |             |        |
+| P | pattern     | 1      |           |        |             |        |
+| e |             |        |           |        | perfect     | 1      |
+| R | research    | 1      |           |        |             |        |
+| S | sentence    | 1      |           |        |             |        |
+| p | speech      | 1      |           |        |             |        |
+| T | teaching    | 1      |           |        |             |        |
+| V | verb        | 1      |           |        |             |        |
 ```
 
 **Data Structure:**
