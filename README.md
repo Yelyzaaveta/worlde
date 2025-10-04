@@ -27,8 +27,7 @@ For adjectives: all degrees of comparison are combined into one lexeme.
 For verbs: all tense, person, and aspect forms are counted as one lexeme.
 
 You also need to count the number of occurrences for each lexeme within its
-group. Sentences in which the count has been performed are marked in blue.
-The number of occurrences of the corresponding lexemes is marked in yellow.
+group.
 
 **(Ukrainian version)**
 
@@ -40,8 +39,7 @@ The number of occurrences of the corresponding lexemes is marked in yellow.
 Для дієслів: усі часові, особові та видові форми рахуються як одна лексема.
 
 Потрібно також порахувати кількість слововживань для кожної лексеми в межах її
-групи. Блакитним кольором позначено речення, в яких здійснено підрахунок.
-Жовтим — кількість слововживань відповідних лексем.
+групи.
 
 ## 🚀 Installation
 
