@@ -77,9 +77,9 @@ new model specified
 
 Worlde provides two main commands: `count` for word counting and `highlight` for document highlighting.
 
-### Command: `count`
+### 🔢 `count` command
 
-Count and export POS-tagged words to Excel.
+Counts and exports POS-tagged words to Excel.
 
 **Basic usage**:
 ```bash
@@ -100,38 +100,7 @@ uv run python -m app.main count data.xlsx --output-sheet analysis
 
 **Output**: Creates a formatted Excel sheet with alphabetically organized word counts.
 
-### Command: `highlight`
-
-Generate a DOCX file with POS-highlighted text.
-
-**Basic usage**:
-```bash
-uv run python -m app.main highlight data.xlsx output.docx
-```
-
-**With options**:
-```bash
-# Specify sheet and model
-uv run python -m app.main highlight data.xlsx highlighted.docx --sheet-name sentences --model-prefix md
-```
-
-**Output**: DOCX file with:
-- Each sentence as a separate paragraph
-- **Nouns** highlighted in turquoise
-- **Verbs** highlighted in yellow
-- **Adjectives** highlighted in pink
-
-### 📊 Input Format
-
-Excel file requirements:
-- **One column** with sentences (no headers)
-- **One sentence per row**
-- Default reads from first sheet or sheet named "data"
-
-### 📤 Output Formats
-
-#### Excel Output (count command)
-
+Example output:
 ```
 |   | Nouns       |        | Verbs     |        | Adjectives  |        |
 |---|-------------|--------|-----------|--------|-------------|--------|
@@ -162,16 +131,27 @@ Excel file requirements:
 - **Columns 4-5**: Verb word and count
 - **Columns 6-7**: Adjective word and count
 
-Words are grouped alphabetically by first and second letters, with all POS categories in the same row.
+### 🎨 `highlight` command
 
-#### DOCX Output (highlight command)
+Generate a DOCX file with POS-highlighted text.
 
+**Basic usage**:
+```bash
+uv run python -m app.main highlight data.xlsx output.docx
+```
+
+**With options**:
+```bash
+# Specify sheet and model
+uv run python -m app.main highlight data.xlsx highlighted.docx --sheet-name sentences --model-prefix md
+```
+
+**Output**: DOCX file with:
 - One paragraph per sentence
 - Color-coded background highlighting:
   - 🔵 **Turquoise**: Nouns
   - 🟡 **Yellow**: Verbs
   - 🟣 **Pink**: Adjectives
-- Fully editable in Microsoft Word or compatible software
 
 ## 🛠️ Development
 
@@ -206,11 +186,6 @@ uv run mypy app/
 uv run ruff format app/
 ```
 
-**Run all checks**:
-```bash
-uv run ruff check app/ && uv run mypy app/
-```
-
 ### Architecture Highlights
 
 - **Result Pattern**: All modules return `Result[T, str]` for clean error handling
@@ -218,51 +193,6 @@ uv run ruff check app/ && uv run mypy app/
 - **Type-Safe**: Full type annotations verified by mypy
 - **Functional**: Minimal side effects, pure functions where possible
 - **Modular**: Clear separation of concerns (reading, processing, writing)
-
-## 🎯 Examples
-
-### Example 1: Quick Analysis
-```bash
-# Analyze with default settings (small model, fast)
-uv run python -m app.main count sentences.xlsx
-```
-
-### Example 2: High Accuracy Analysis
-```bash
-# Use transformer model for maximum accuracy
-uv run python -m app.main count sentences.xlsx --model-prefix trf --output-sheet detailed_analysis
-```
-
-### Example 3: Create Highlighted Document
-```bash
-# Generate color-coded DOCX for review
-uv run python -m app.main highlight sentences.xlsx review.docx --model-prefix md
-```
-
-### Example 4: Batch Processing
-```bash
-# Process multiple files
-for file in data/*.xlsx; do
-    uv run python -m app.main count "$file" --model-prefix sm
-done
-```
-
-## ⚠️ Error Handling
-
-Worlde provides clear, colored error messages:
-
-```bash
-# Missing file
-Error: File not found: missing.xlsx
-
-# Missing sheet
-Error: Could not read sheet 'wrong_name': Worksheet named 'wrong_name' not found
-
-# Missing model
-Error: Model 'en_core_web_lg' not found. Please install it using: python -m spacy download en_core_web_lg
-```
-
-All errors are displayed in red with actionable instructions.
 
 ## 📄 License
 
